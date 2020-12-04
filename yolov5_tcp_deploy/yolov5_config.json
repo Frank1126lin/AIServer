@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "weights": "D:\\XXX\\XXX",
+  "source": "Z:\\",
+  "save-dir": "D:\\output",
+  "device": "0",
+  "img-size": 640,
+  "conf-thres": 0.25,
+  "iou-thres": 0.45,
+  "classes": "all"
+}
