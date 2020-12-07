@@ -69,10 +69,10 @@ def predict( save_img = True, weights = weights, source = source, out = save_dir
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes=classes, agnostic=agnostic_nms)
 
         # Process detections
-        p, s, im0 = path, '', im0s
-
+        p, s, im0 = Path(path), '', im0s
         ss = {"imgPath":source} # dict format
-        save_path = str(save_dir / p.name)
+        save_path = os.path.join(save_dir, str(p.name))
+        # print(save_path)
         for i, det in enumerate(pred): # detections in image
 
             if len(det):
@@ -93,4 +93,3 @@ def predict( save_img = True, weights = weights, source = source, out = save_dir
 # if __name__ == '__main__':
 #     with torch.no_grad():
 #             predict()
-
