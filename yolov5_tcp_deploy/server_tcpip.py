@@ -14,7 +14,7 @@ from predict import predict, source
 
 # 主线程开启服务，接收图片地址，返回推理结果json
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = "172.19.17.212"
+host = "127.0.0.1"
 port = 2200
 s.bind((host, port))
 s.listen(5)
@@ -35,21 +35,24 @@ def conn():
 
 def msg_handle(conn, addr):
     "消息处理及队列管理"
-    while True:
-        msg = conn.recv(1024)
-        msg = msg.decode("utf-8")
-        print(f"@{addr[0]}说：{msg}")
-        q1.put(msg)
-        t1 = time.time()
-        event.wait()
-        result = q2.get()
-        if result:
-            t2 = time.time()
-            print("推理用时：", (t2-t1)*1000, "ms")
-            print(result)
-            result = json.dumps(result)
-            result = bytes(result, encoding = "utf-8")
-            conn.send(result)
+    try:
+        while True:
+            msg = conn.recv(1024)
+            msg = msg.decode("utf-8")
+            print(f"@{addr[0]}说：{msg}")
+            q1.put(msg)
+            t1 = time.time()
+            event.wait()
+            result = q2.get()
+            if result:
+                t2 = time.time()
+                print("推理用时：", (t2-t1)*1000, "ms")
+                print(result)
+                result = json.dumps(result)
+                result = bytes(result, encoding = "utf-8")
+                conn.send(result)
+    except Exception as flag:
+        print(flag)
 
 
 def handle():
